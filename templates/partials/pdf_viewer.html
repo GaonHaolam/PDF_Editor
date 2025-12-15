@@ -1,0 +1,68 @@
+<!-- PDF Viewer Partial -->
+<div id="pdfViewerContainer" class="bg-light rounded-4 shadow-sm p-4 border"
+    data-pdf-url="{{ pdf_url if pdf_url else '' }}" data-filename="{{ filename }}" data-folder-type="{{ folder_type }}">
+
+    <!-- Toolbar -->
+    <div class="d-flex justify-content-between align-items-center mb-3 bg-white p-3 rounded-pill shadow-sm">
+        <div class="d-flex align-items-center gap-2">
+            <button id="prevPage" class="btn btn-outline-primary rounded-circle"><i
+                    class="bi bi-chevron-left"></i></button>
+            <span id="pageInfo" class="fw-bold mx-2">Page <span id="pageNum">--</span> of <span
+                    id="pageCount">--</span></span>
+            <button id="nextPage" class="btn btn-outline-primary rounded-circle"><i
+                    class="bi bi-chevron-right"></i></button>
+            <div class="vr mx-2"></div>
+
+            <div class="position-relative d-inline-block">
+                <button id="deletePageBtn" class="btn btn-outline-danger rounded-circle" title="Delete current page">
+                    <i class="bi bi-trash"></i>
+                </button>
+
+                <!-- Custom Confirmation Popover -->
+                <div id="deleteConfirmPopup"
+                    class="position-absolute bg-white shadow-lg rounded-3 p-3 border mt-2 d-none"
+                    style="top: 100%; left: 50%; transform: translateX(-50%); z-index: 1000; width: 200px; text-align: center;">
+                    <p class="small mb-2 fw-bold text-dark">Delete this page?</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button id="confirmDeleteYes" class="btn btn-sm btn-danger rounded-pill px-3">Yes</button>
+                        <button id="confirmDeleteNo" class="btn btn-sm btn-secondary rounded-pill px-3">No</button>
+                    </div>
+                    <!-- Triangle Arrow -->
+                    <div class="position-absolute bg-white border-top border-start"
+                        style="top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 10px; height: 10px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <button id="zoomOut" class="btn btn-outline-secondary rounded-circle"><i class="bi bi-dash-lg"></i></button>
+            <span id="zoomLevel" class="fw-medium mx-2">100%</span>
+            <button id="zoomIn" class="btn btn-outline-secondary rounded-circle"><i class="bi bi-plus-lg"></i></button>
+        </div>
+    </div>
+
+    <!-- Canvas for PDF Page -->
+    <div class="overflow-auto" style="max-height: 80vh;">
+        <canvas id="pdfCanvas" class="shadow rounded-3 border"></canvas>
+    </div>
+
+    {% if viewer_actions %}
+    {{ viewer_actions }}
+    {% else %}
+    <div class="mt-4">
+        <a href="{{ url_for('ocr') }}" class="btn btn-secondary rounded-pill px-4">Upload Another File</a>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    // Set worker source
+    if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+</script>
+<script src="{{ url_for('static', filename='js/pdf_viewer.js') }}"></script>

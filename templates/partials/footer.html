@@ -1,0 +1,53 @@
+<footer class="bg-dark text-white-50 pt-5 pb-3 mt-5">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-md-4 mb-3">
+        <h5 class="text-white mb-3">
+          <i class="bi bi-file-earmark-pdf-fill me-2"></i> PDF Editor
+        </h5>
+        <p class="small">
+          Simple, secure, and fast tools to manage your PDF documents.
+          Upload, slice, reorder, and OCR your files in seconds.
+        </p>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <h5 class="text-white mb-3">Tools</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href="{{ url_for('slice') }}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-layers-half me-2"></i> Slice & Reorder
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{{ url_for('ocr') }}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-eye me-2"></i> OCR PDF
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{{ url_for('history') }}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-clock-history me-2"></i> History
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <h5 class="text-white mb-3">Contact Me</h5>
+        <ul class="list-unstyled text-white-50">
+          <li class="mb-2">Lazer Hoffmann</li>
+          <li class="mb-2"><a href="tel:3472949570"
+              class="text-white-50 text-decoration-none hover-white">347-294-9570</a></li>
+          <li class="mb-2"><a href="mailto:lazerhoff@gmail.com"
+              class="text-white-50 text-decoration-none hover-white">lazerhoff@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="bg-white-50">
+    <div class="text-center small">
+      <p>&copy; 2024 PDF Editor. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 text-center">
+
+      <h1 class="mb-4 display-5 fw-bold text-gradient">Slice PDF Document</h1>
+      <p class="mb-5 text-muted lead">Upload your PDF and choose how to slice it.</p>
+
+      <form method="POST" enctype="multipart/form-data" id="sliceForm">
+
+        <!-- Hidden Inputs -->
+        <input type="file" name="pdf_file" id="fileInput" class="d-none" accept=".pdf">
+        <input type="hidden" name="action" id="actionInput">
+
+        {% include 'partials/upload_zone.html' %}
+
+        <!-- Action Buttons Grid -->
+        <h3 class="mb-4 text-start fw-bold text-secondary">Choose Processing Mode</h3>
+
+        <div class="row g-4 mb-5" id="actionGrid">
+          <!-- Booklet RTL -->
+          <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="booklet_rtl">
+              <div class="card-body text-center p-4">
+                <div class="fs-1 text-primary mb-3"><i class="bi bi-book-half"></i></div>
+                <h5 class="card-title fw-bold text-dark">Booklet</h5>
+                <p class="card-text text-muted small">Right to Left<br>(Hebrew/Arabic)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booklet LTR -->
+          <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="booklet_ltr">
+              <div class="card-body text-center p-4">
+                <div class="fs-1 text-primary mb-3"><i class="bi bi-book-half flip-horizontal"></i></div>
+                <h5 class="card-title fw-bold text-dark">Booklet</h5>
+                <p class="card-text text-muted small">Left to Right<br>(English/Latin)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spreads RTL -->
+          <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="spreads_rtl">
+              <div class="card-body text-center p-4">
+                <div class="fs-1 text-primary mb-3"><i class="bi bi-layout-text-window-reverse"></i></div>
+                <h5 class="card-title fw-bold text-dark">Spreads</h5>
+                <p class="card-text text-muted small">Right to Left<br>(Hebrew/Arabic)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spreads LTR -->
+          <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="spreads_ltr">
+              <div class="card-body text-center p-4">
+                <div class="fs-1 text-primary mb-3"><i class="bi bi-layout-text-window"></i></div>
+                <h5 class="card-title fw-bold text-dark">Spreads</h5>
+                <p class="card-text text-muted small">Left to Right<br>(English/Latin)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slice Button -->
+        <button type="submit" id="sliceButton"
+          class="btn btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm cursor-pointer" disabled>
+          <i class="bi bi-scissors me-2"></i> Slice PDF
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/upload_utils.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileDisplay = document.getElementById('fileDisplay');
+    const fileName = document.getElementById('fileName');
+    const actionInput = document.getElementById('actionInput');
+    const sliceButton = document.getElementById('sliceButton');
+    const actionCards = document.querySelectorAll('.action-card');
+
+    let fileSelected = false;
+    let actionSelected = false;
+
+    function updateSubmitButton() {
+      if (sliceButton) {
+        sliceButton.disabled = !(fileSelected && actionSelected);
+      }
+    }
+
+    // Init Drag and Drop
+    setupDragAndDrop(dropZone, fileInput, fileDisplay, fileName, (file) => {
+      fileSelected = true;
+      updateSubmitButton();
+    });
+
+    // Init Action Cards
+    setupActionCards(actionCards, actionInput, (val) => {
+      actionSelected = true;
+      updateSubmitButton();
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+  <div class="container-fluid">
+
+    <a href="{{ url_for('home') }}" class="navbar-brand">
+      <img src="{{ url_for('static', filename='images/logo_white_bg.png') }}" alt="PDF Editor" class="logo">
+      PDF Editor
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if session.get("user_id") %}
+
+        <li class="nav-item">
+          <a href="{{ url_for('slice') }}" class="nav-link">
+            <i class="bi bi-layers-half me-1"></i> Slice & Reorder
+          </a>
+        </li>
+
+        <li class="nav-item d-none d-lg-flex align-items-center">
+          <span class="text-white-50 mx-2">|</span>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('ocr') }}" class="nav-link">
+            <i class="bi bi-eye me-1"></i> OCR PDF
+          </a>
+        </li>
+
+        <li class="nav-item d-none d-lg-flex align-items-center">
+          <span class="text-white-50 mx-2">|</span>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('history') }}" class="nav-link">
+            <i class="bi bi-clock-history me-1"></i> History
+          </a>
+        </li>
+        {% endif %}
+
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        {% if session.get("user_id") %}
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+
+    </div>
+  </div>
+</nav>

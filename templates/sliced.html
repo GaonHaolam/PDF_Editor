@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 text-center">
+
+            <h1 class="mb-4 display-5 fw-bold text-gradient">Slicing Complete!</h1>
+            <p class="mb-5 text-muted lead">Your PDF has been successfully processed.</p>
+
+            <!-- Results Card -->
+            <div class="card border-0 shadow-lg glass rounded-4 overflow-hidden mb-5">
+                <div class="card-body p-0">
+
+                    <!-- PDF Preview using Partial -->
+                    {% set viewer_actions %}
+                    <div class="p-4 bg-white">
+                        <div class="row g-3 justify-content-center align-items-center">
+
+                            <div class="col-md-5">
+                                <a href="{{ output_file }}"
+                                    class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm hover-lift cursor-pointer"
+                                    download>
+                                    <i class="bi bi-download me-2"></i> Download PDF
+                                </a>
+                            </div>
+
+                            <div class="col-md-5">
+                                <a href="/ocr"
+                                    class="btn btn-outline-primary btn-lg w-100 rounded-pill fw-bold hover-lift cursor-pointer">
+                                    <i class="bi bi-search me-2"></i> OCR This Document
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="/slice"
+                                class="text-decoration-none text-muted small hover-underline cursor-pointer">
+                                <i class="bi bi-arrow-left me-1"></i> Slice Another Document
+                            </a>
+                        </div>
+
+                    </div>
+                    {% endset %}
+
+                    {% include 'partials/pdf_viewer.html' %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

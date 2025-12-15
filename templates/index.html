@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block title %} Home Page{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary">PDF Toolbox</h1>
+    <p class="lead text-muted">Select a tool to begin working on your documents.</p>
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm text-center p-4 border-0 glass hover-lift">
+        <div class="card-body">
+          <div class="display-4 text-primary mb-3">
+            <i class="bi bi-layers-half"></i>
+          </div>
+          <h3 class="card-title h4">Slice & Reorder</h3>
+          <p class="card-text text-muted">Split pages, rearrange booklets, and organize your document structure.</p>
+
+          <a href="{{ url_for('slice') }}" class="btn btn-primary mt-3">Start Editor</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm text-center p-4 border-0 glass hover-lift">
+        <div class="card-body">
+          <div class="display-4 text-success mb-3">
+            <i class="bi bi-eye"></i>
+          </div>
+          <h3 class="card-title h4">OCR PDF</h3>
+          <p class="card-text text-muted">Extract text from scanned documents using optical character recognition.</p>
+
+          <a href="{{ url_for('ocr') }}" class="btn btn-outline-success mt-3">Scan File</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm text-center p-4 border-0 glass hover-lift">
+        <div class="card-body">
+          <div class="display-4 text-secondary mb-3">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <h3 class="card-title h4">File History</h3>
+          <p class="card-text text-muted">View your past uploads, edited files, and download history.</p>
+
+          <a href="{{ url_for('history') }}" class="btn btn-outline-secondary mt-3">View Logs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

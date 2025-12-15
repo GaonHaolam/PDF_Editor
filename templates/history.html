@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %} File History{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>File History</h1>
+  <p class="text-muted">View your past uploads and edited files.</p>
+  
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Date</th>
+        <th>Size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="4" class="text-center text-muted">No files yet</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
