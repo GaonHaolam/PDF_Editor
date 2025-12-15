@@ -3,14 +3,14 @@ import os
 import copy
 from pypdf import PdfReader, PdfWriter
 
-def slice_pdf(input_path, output_path, mode="spreads_ltr"):
+def slice_pdf(input_path, output_path):
     """
     Slices a PDF file by splitting each page into two.
+    Always outputs [Visual Left, Visual Right] sequence.
     
     Args:
         input_path (str): Path to source PDF.
         output_path (str): Path to save processed PDF.
-        mode (str): Processing mode. Options: 'spreads_ltr', 'spreads_rtl', 'booklet_ltr', 'booklet_rtl'.
     """
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"File '{input_path}' not found.")
@@ -19,7 +19,6 @@ def slice_pdf(input_path, output_path, mode="spreads_ltr"):
     writer = PdfWriter()
     
     num_pages = len(reader.pages)
-    print(f"Processing '{input_path}' with {num_pages} pages in mode '{mode}'...")
 
     for i in range(num_pages):
         p_orig = reader.pages[i]
@@ -79,30 +78,12 @@ def slice_pdf(input_path, output_path, mode="spreads_ltr"):
             p_right.cropbox.lower_left = (w/2, 0)
             p_right.cropbox.upper_right = (w, h)
 
-        # Output Order decision
-        # If LTR: Visual Left is Page 1, Visual Right is Page 2.
-        # If RTL: Visual Right is Page 1, Visual Left is Page 2.
-        
-        if "rtl" in mode.lower():
-            writer.add_page(p_right)
-            writer.add_page(p_left)
-        else:
-            # Default LTR
-            writer.add_page(p_left)
-            writer.add_page(p_right)
+        # Output Order: Always Left then Right
+        # Reordering is handled by reorder.py
+        writer.add_page(p_left)
+        writer.add_page(p_right)
 
     with open(output_path, "wb") as f_out:
         writer.write(f_out)
         
     print(f"Success. Sliced PDF saved as: {output_path}")
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python slice.py <input_pdf_file> [output_pdf_file]")
-    else:
-        inp = sys.argv[1]
-        if len(sys.argv) >= 3:
-            out = sys.argv[2]
-        else:
-            out = f"sliced_{os.path.basename(inp)}"
-        slice_pdf(inp, out)

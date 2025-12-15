@@ -6,7 +6,7 @@
 <div class="container py-5">
   <h1>File History</h1>
   <p class="text-muted">View your past uploads and edited files.</p>
-  
+
   <table class="table table-striped mt-4">
     <thead>
       <tr>
@@ -17,10 +17,57 @@
       </tr>
     </thead>
     <tbody>
+      {% for file in files %}
       <tr>
-        <td colspan="4" class="text-center text-muted">No files yet</td>
+        <td>
+          <i class="bi bi-file-earmark-pdf text-danger me-2"></i>
+          {{ file.name }}
+        </td>
+        <td>{{ file.date }}</td>
+        <td>{{ file.size }}</td>
+        <td>
+          <a href="{{ file.url }}" class="btn btn-sm btn-outline-primary me-1" download>
+            <i class="bi bi-download"></i>
+          </a>
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteFile('{{ file.name }}')">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
       </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="text-center text-muted">No saved files yet</td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  async function deleteFile(filename) {
+    if (!confirm('Are you sure you want to delete ' + filename + '?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/delete_file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: filename })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        location.reload();
+      } else {
+        alert('Error deleting file: ' + data.error);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to delete file.');
+    }
+  }
+</script>
 {% endblock %}

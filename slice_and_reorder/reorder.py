@@ -55,8 +55,8 @@ def reorder_pdf(input_path, output_path, mode):
 
     elif mode == 3: # Spreads RTL
         for i in range(0, num_pages, 2):
-            new_order[i] = reader.pages[i+1]   # Right -> First
-            new_order[i+1] = reader.pages[i]   # Left -> Second
+            new_order[i] = reader.pages[i+1]
+            new_order[i+1] = reader.pages[i]
 
     elif mode == 4: # Spreads LTR
         for i in range(num_pages):
@@ -71,25 +71,3 @@ def reorder_pdf(input_path, output_path, mode):
 
     with open(output_path, "wb") as f_out:
         writer.write(f_out)
-
-    print(f"Success. Reordered PDF saved as: {output_path}")
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python reorder.py <input_pdf> <mode> [output_pdf]")
-        print("Modes:")
-        print("1. Booklet Right to Left")
-        print("2. Booklet Left to Right")
-        print("3. Spreads Right to Left")
-        print("4. Spreads Left to Right")
-    else:
-        try:
-            mode_arg = int(sys.argv[2])
-            inp = sys.argv[1]
-            if len(sys.argv) >= 4:
-                out = sys.argv[3]
-            else:
-                out = f"reordered_{os.path.basename(inp)}"
-            reorder_pdf(inp, out, mode_arg)
-        except ValueError as e:
-            print(f"Error: {e}")
