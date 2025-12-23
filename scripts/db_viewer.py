@@ -1,4 +1,3 @@
-
 import os
 import shutil
 from cs50 import SQL

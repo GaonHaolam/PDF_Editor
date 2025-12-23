@@ -1,120 +1,26 @@
 {% extends "layout.html" %}
 
-{% block content %}
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10 text-center">
+{% block title %} OCR {% endblock %}
 
-      <h1 class="mb-4 display-5 fw-bold text-gradient">OCR PDF Document</h1>
-
-      {% if pdf_url %}
-      {% include 'partials/pdf_viewer.html' %}
-      {% else %}
-
-      <p class="mb-5 text-muted lead">Upload your scanned PDF and extract text.</p>
-
-      <form method="POST" enctype="multipart/form-data" id="ocrForm">
-
-        <!-- Hidden Inputs -->
-        <input type="file" name="pdf_file" id="fileInput" class="d-none" accept=".pdf">
-        <input type="hidden" name="language" id="languageInput">
-
-        {% include 'partials/upload_zone.html' %}
-
-        <!-- Action Buttons Grid -->
-        <h3 class="mb-4 text-start fw-bold text-secondary">Choose Language</h3>
-
-        <div class="row g-4 mb-5 justify-content-center" id="actionGrid">
-          <!-- OCR: Hebrew -->
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="hebrew">
-              <div class="card-body text-center p-4">
-                <div class="fs-1 text-primary mb-3"><span class="fw-bold" style="font-family: sans-serif;">א</span>
-                </div>
-                <h5 class="card-title fw-bold text-dark">OCR: Hebrew</h5>
-                <p class="card-text text-muted small">Optimized for Hebrew text</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- OCR: English -->
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card" data-value="english">
-              <div class="card-body text-center p-4">
-                <div class="fs-1 text-primary mb-3"><i class="bi bi-type"></i></div>
-                <h5 class="card-title fw-bold text-dark">OCR: English</h5>
-                <p class="card-text text-muted small">Optimized for English text</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Hebrew and English -->
-          <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm hover-lift cursor-pointer action-card"
-              data-value="hebrew_english">
-              <div class="card-body text-center p-4">
-                <div class="fs-1 text-primary mb-3">
-                  <span class="fw-bold" style="font-family: sans-serif;">א</span>
-                  <i class="bi bi-plus mx-1 text-muted fs-4"></i>
-                  <i class="bi bi-type"></i>
-                </div>
-                <h5 class="card-title fw-bold text-dark">Hebrew and English</h5>
-                <p class="card-text text-muted small">Mixed language support</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" id="ocrButton"
-          class="btn btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm cursor-pointer" disabled>
-          <i class="bi bi-layers-half me-2"></i> OCR
-        </button>
-
-      </form>
-      {% endif %}
-    </div>
-  </div>
-</div>
+{% block extra_css %}
+<style>
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .blink {
+    animation: blink 1.5s linear infinite;
+  }
+</style>
 {% endblock %}
 
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/upload_utils.js') }}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileDisplay = document.getElementById('fileDisplay');
-    const fileName = document.getElementById('fileName');
-    const languageInput = document.getElementById('languageInput');
-    const ocrButton = document.getElementById('ocrButton');
-    const actionCards = document.querySelectorAll('.action-card');
-
-    let fileSelected = false;
-    let actionSelected = false;
-
-    function updateSubmitButton() {
-      if (ocrButton) {
-        ocrButton.disabled = !(fileSelected && actionSelected);
-      }
-    }
-
-    // Init Drag and Drop
-    setupDragAndDrop(dropZone, fileInput, fileDisplay, fileName, (file) => {
-      fileSelected = true;
-      updateSubmitButton();
-    });
-
-    // Init Action Cards
-    setupActionCards(actionCards, languageInput, (val) => {
-      actionSelected = true;
-      updateSubmitButton();
-    });
-  });
-
-  // Cleanup temp files on page unload
-  window.addEventListener('pagehide', function () {
-    navigator.sendBeacon('/api/cleanup_temp');
-  });
-</script>
+{% block content %}
+<div class="container py-5 d-flex flex-column align-items-center justify-content-center" style="min-height: 60vh;">
+  <h1 class="display-1 fw-bold text-primary blink mb-4">COMING SOON</h1>
+  <p class="lead text-muted text-center">We are currently building the OCR engine. <br> Check back later for updates!</p>
+  <a href="{{ url_for('home') }}" class="btn btn-outline-primary rounded-pill px-4 mt-4">
+    <i class="bi bi-arrow-left me-2"></i> Back to Toolbox
+  </a>
+</div>
 {% endblock %}

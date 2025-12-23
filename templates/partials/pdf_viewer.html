@@ -47,13 +47,40 @@
         <canvas id="pdfCanvas" class="shadow rounded-3 border"></canvas>
     </div>
 
-    {% if viewer_actions %}
-    {{ viewer_actions }}
-    {% else %}
-    <div class="mt-4">
-        <a href="{{ url_for('ocr') }}" class="btn btn-secondary rounded-pill px-4">Upload Another File</a>
+    <!-- Actions Section -->
+    <div class="p-4 bg-white mt-3 rounded-3">
+        <div class="row g-3 justify-content-center align-items-center">
+
+            <!-- Download Button -->
+            <div class="col-md-4">
+                <a href="{{ pdf_url }}"
+                    class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm hover-lift cursor-pointer"
+                    download>
+                    <i class="bi bi-download me-2"></i> Download
+                </a>
+            </div>
+
+            <!-- Save Button -->
+            <div class="col-md-4">
+                <button id="saveBtn"
+                    class="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm hover-lift cursor-pointer">
+                    <i class="bi bi-hdd me-2"></i> Save
+                </button>
+            </div>
+
+            <!-- Extra Actions (OCR, etc) -->
+            {% if viewer_actions %}
+                {{ viewer_actions }}
+            {% endif %}
+        </div>
+
+        <!-- Footer Links -->
+        {% if footer_links %}
+        <div class="mt-4">
+            {{ footer_links }}
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 
 </div>
 

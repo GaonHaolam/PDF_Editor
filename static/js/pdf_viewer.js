@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const deleteConfirmPopup = document.getElementById('deleteConfirmPopup');
         const confirmDeleteYes = document.getElementById('confirmDeleteYes');
         const confirmDeleteNo = document.getElementById('confirmDeleteNo');
+        const saveBtn = document.getElementById('saveBtn');
 
         let pdfDoc = null;
         let pageNum = 1;
@@ -198,6 +199,48 @@ document.addEventListener('DOMContentLoaded', function () {
                     } catch (error) {
                         console.error('Error:', error);
                         alert('Failed to send delete request.');
+                    }
+                });
+            }
+
+            // Save File Logic
+            if (saveBtn) {
+                saveBtn.addEventListener('click', async function () {
+                    const btn = this;
+                    const originalContent = btn.innerHTML;
+
+                    try {
+                        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+                        btn.disabled = true;
+
+                        const response = await fetch('/save_file', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: filename, folder_type: folderType })
+                        });
+                        const data = await response.json();
+
+                        if (data.success) {
+                            btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Saved!';
+                            btn.classList.remove('btn-success');
+                            btn.classList.add('btn-outline-success');
+
+                            setTimeout(() => {
+                                btn.innerHTML = originalContent;
+                                btn.disabled = false;
+                                btn.classList.add('btn-success');
+                                btn.classList.remove('btn-outline-success');
+                            }, 2000);
+                        } else {
+                            alert('Error saving file: ' + (data.error || 'Unknown error'));
+                            btn.innerHTML = originalContent;
+                            btn.disabled = false;
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        alert('Failed to save file.');
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
                     }
                 });
             }

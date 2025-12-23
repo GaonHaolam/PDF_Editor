@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{%block title %} Slicing Complete {% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -14,41 +16,19 @@
 
                     <!-- PDF Preview using Partial -->
                     {% set viewer_actions %}
-                    <div class="p-4 bg-white">
-                        <div class="row g-3 justify-content-center align-items-center">
-
-                            <div class="col-md-4">
-                                <a href="{{ output_file }}"
-                                    class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm hover-lift cursor-pointer"
-                                    download>
-                                    <i class="bi bi-download me-2"></i> Download
-                                </a>
-                            </div>
-
-                            <div class="col-md-4">
-                                <button onclick="saveFile('{{ filename }}', '{{ folder_type }}')"
-                                    class="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm hover-lift cursor-pointer">
-                                    <i class="bi bi-hdd me-2"></i> Save
-                                </button>
-                            </div>
-
-                            <div class="col-md-4">
-                                <a href="/ocr"
-                                    class="btn btn-outline-primary btn-lg w-100 rounded-pill fw-bold hover-lift cursor-pointer">
-                                    <i class="bi bi-search me-2"></i> OCR
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <div class="mt-4">
-                            <a href="/slice"
-                                class="text-decoration-none text-muted small hover-underline cursor-pointer">
-                                <i class="bi bi-arrow-left me-1"></i> Slice Another Document
-                            </a>
-                        </div>
-
+                    <div class="col-md-4">
+                        <a href="/ocr"
+                            class="btn btn-outline-primary btn-lg w-100 rounded-pill fw-bold hover-lift cursor-pointer">
+                            <i class="bi bi-search me-2"></i> OCR
+                        </a>
                     </div>
+                    {% endset %}
+
+                    {% set footer_links %}
+                    <a href="/slice"
+                        class="text-decoration-none text-muted small hover-underline cursor-pointer">
+                        <i class="bi bi-arrow-left me-1"></i> Slice Another Document
+                    </a>
                     {% endset %}
 
                     {% include 'partials/pdf_viewer.html' %}
@@ -62,42 +42,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    async function saveFile(filename, folderType) {
-        try {
-            const btn = event.currentTarget;
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
-            btn.disabled = true;
-
-            const response = await fetch('/save_file', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: filename, folder_type: folderType })
-            });
-            const data = await response.json();
-
-            if (data.success) {
-                btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Saved!';
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-outline-success');
-                setTimeout(() => {
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                    btn.classList.add('btn-success');
-                    btn.classList.remove('btn-outline-success');
-                }, 2000);
-            } else {
-                alert('Error saving file: ' + data.error);
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            }
-        } catch (e) {
-            console.error(e);
-            alert('Failed to save file.');
-            // Reset button
-            const btn = event.currentTarget;
-        }
-    }
-</script>
 {% endblock %}

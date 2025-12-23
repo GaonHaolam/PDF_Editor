@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{%block title %} Slice & Reorder PDF{% endblock %}
+
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
@@ -80,35 +82,6 @@
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/upload_utils.js') }}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileDisplay = document.getElementById('fileDisplay');
-    const fileName = document.getElementById('fileName');
-    const actionInput = document.getElementById('actionInput');
-    const sliceButton = document.getElementById('sliceButton');
-    const actionCards = document.querySelectorAll('.action-card');
-
-    let fileSelected = false;
-    let actionSelected = false;
-
-    function updateSubmitButton() {
-      if (sliceButton) {
-        sliceButton.disabled = !(fileSelected && actionSelected);
-      }
-    }
-
-    // Init Drag and Drop
-    setupDragAndDrop(dropZone, fileInput, fileDisplay, fileName, (file) => {
-      fileSelected = true;
-      updateSubmitButton();
-    });
-
-    // Init Action Cards
-    setupActionCards(actionCards, actionInput, (val) => {
-      actionSelected = true;
-      updateSubmitButton();
-    });
-  });
+  initializeUploadPage('sliceButton', 'actionInput');
 </script>
 {% endblock %}

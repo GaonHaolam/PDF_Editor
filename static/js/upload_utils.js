@@ -4,8 +4,8 @@
  * Initializes drag and drop functionality for a drop zone.
  * @param {HTMLElement} dropZone - The element that accepts drops.
  * @param {HTMLElement} fileInput - The hidden file input.
- * @param {HTMLElement} fileDisplay - Element to show selected filename (optional).
- * @param {HTMLElement} fileName - Element to update with filename (optional).
+ * @param {HTMLElement} fileDisplay - Element to show selected filename.
+ * @param {HTMLElement} fileName - Element to update with filename.
  * @param {Function} callback - Function called when file is selected.
  */
 function setupDragAndDrop(dropZone, fileInput, fileDisplay, fileName, callback) {
@@ -84,6 +84,41 @@ function setupActionCards(actionCards, hiddenInput, callback) {
             if (hiddenInput) hiddenInput.value = val;
 
             if (callback) callback(val);
+        });
+    });
+}
+
+/**
+ * @param {string} submitBtnId - The ID of the submit button.
+ * @param {string} actionInputId - The ID of the hidden input for the action value.
+ */
+function initializeUploadPage(submitBtnId, actionInputId) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileDisplay = document.getElementById('fileDisplay');
+        const fileName = document.getElementById('fileName');
+        const actionInput = document.getElementById(actionInputId);
+        const submitButton = document.getElementById(submitBtnId);
+        const actionCards = document.querySelectorAll('.action-card');
+
+        let fileSelected = false;
+        let actionSelected = false;
+
+        function updateSubmitButton() {
+            if (submitButton) {
+                submitButton.disabled = !(fileSelected && actionSelected);
+            }
+        }
+
+        setupDragAndDrop(dropZone, fileInput, fileDisplay, fileName, (file) => {
+            fileSelected = true;
+            updateSubmitButton();
+        });
+
+        setupActionCards(actionCards, actionInput, (val) => {
+            actionSelected = true;
+            updateSubmitButton();
         });
     });
 }

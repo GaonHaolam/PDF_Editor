@@ -11,8 +11,6 @@ def reorder_pdf(input_path, output_path, mode):
     
     # Validation: Must be even number of pages
     if num_pages % 2 != 0:
-        print(f"Error: The input file has {num_pages} pages.")
-        print("This format requires an even number of pages.")
         raise ValueError("Input file must have an even number of pages.")
 
     writer = PdfWriter()
